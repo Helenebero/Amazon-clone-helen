@@ -1,23 +1,26 @@
-import React from "react";
-import Routing from "./Router.js"
-
-//import Header from "./Components/Header/Header"
-import Carousel from "./Components/Carousel/CarouselEffect";
-import Category from "./Components/Category/Category"
-import Product from "./Components/Product/Product";
-
+import React, { useContext, useEffect } from "react";
+import Routing from "./Router.js";
+import { DataContext } from "./Components/DataProvider/Dataprovider.js";
+import { Type } from "./utility/Action.type.js";
+import { auth } from "./utility/Firebase.js";
 
 function App() {
-  return (
-    <>
-      <Routing/>
-      {/* <Header /> */}
-      {/* <Carousel />
-      <Category/>
-      <Product/>
-       */}
-    </>
-  )
+  const [{ user }, dispatch] = useContext(DataContext);
+  useEffect(() => {
+    auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        dispatch({
+          type: Type.SET_USER,
+          user: authUser,
+        });
+      } else {
+        dispatch({
+          type: Type.SET_USER,
+          user: null,
+        });
+      }
+    });
+  }, []);
+  return <Routing />;
 }
-
-export default App
+export default App;
