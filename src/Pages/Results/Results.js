@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react"
-import classes from "./Results.module.css"
-import Layout from "../../Components/Layout/Layout"
-import { useParams } from "react-router-dom"
+import React, { useState, useEffect } from "react";
+import classes from "./Results.module.css";
+import Layout from "../../Components/Layout/Layout";
+import { useParams } from "react-router-dom";
 import axios from "axios";
-import { ProductUrl } from "../../Api/endPoint"
-import Productcard from "../../Components/Product/Productcard"
+import { ProductUrl } from "../../Api/endPoint";
+import Productcard from "../../Components/Product/Productcard";
 
 function Results() {
   const [results, SetResults] = useState([]);
-  const { CategoryName } = useParams();
-  console.log(CategoryName)
+  const { categoryName } = useParams();
+  console.log(categoryName);
   useEffect(() => {
-    axios.get(`${ProductUrl}/products/category/${CategoryName.toLowerCase()}`)
+    axios
+      .get(`${ProductUrl}/products/category/${categoryName.toLowerCase()}`)
       .then((res) => {
         SetResults(res.data);
       })
@@ -23,7 +24,7 @@ function Results() {
     <Layout>
       <section>
         <h1 style={{ padding: "30px" }}>Results</h1>
-        <p style={{ padding: "30px" }}>Category/{CategoryName}</p>
+        <p style={{ padding: "30px" }}>Category/{categoryName}</p>
         <hr />
         <div className={classes.products_Container}>
           {results?.map((Product) => (

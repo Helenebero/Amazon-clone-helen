@@ -1,4 +1,4 @@
-import React, { useContext, useState ,useEffect} from "react";
+import React, { useContext, useState, useEffect } from "react";
 import classes from "./Header.module.css";
 import LowerHeader from "./LowerHeader";
 import { BiCart } from "react-icons/bi";
@@ -9,19 +9,14 @@ import { DataContext } from "../DataProvider/Dataprovider";
 import { auth } from "../../utility/Firebase";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 
-
-
-
-
-
-function Header () {
-  const [{ User,basket }, dispatch] = useContext(DataContext);
+function Header() {
+  const [{ User, basket }, dispatch] = useContext(DataContext);
   const [location, setLocation] = useState({});
   const totalItem = basket?.reduce((amount, item) => {
     return item.amount + amount;
   }, 0);
 
-  
+  useEffect(() => {
     fetch("https://ipapi.co/8.8.8.8/json/")
       .then(function (response) {
         response.json().then((jsonData) => {
@@ -31,7 +26,7 @@ function Header () {
       .catch(function (error) {
         console.log(error);
       });
-  
+  }, []);
 
   return (
     <section className={classes.fixed}>
@@ -74,12 +69,11 @@ function Header () {
             </Link>
             <Link to={!User && "/auth "}>
               <div>
-                {
-                User ? (
+                {User ? (
                   <>
                     <p>Hello {User?.email?.split("@")[0]} </p>
 
-                    <span onClick={()=>auth.signOut()}>Sign Out</span>
+                    <span onClick={() => auth.signOut()}>Sign Out</span>
                   </>
                 ) : (
                   <>
@@ -106,6 +100,6 @@ function Header () {
       <LowerHeader />
     </section>
   );
-};
+}
 
 export default Header;

@@ -7,7 +7,6 @@ import {
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { ClipLoader } from "react-spinners";
-
 import { DataContext } from "../../Components/DataProvider/Dataprovider";
 import { Type } from "../../utility/Action.type";
 
@@ -19,7 +18,7 @@ function Auth() {
     signin: false,
     signUp: false,
   });
-  const [{ user }, dispatch] = useContext(DataContext);
+  const [{ User }, dispatch] = useContext(DataContext);
   const navigate = useNavigate();
   const navStateData = useLocation();
   // console.log(navStateData);
@@ -29,6 +28,9 @@ function Auth() {
     if (e.target.name == "signin") {
       //firebase auth
       setLoading({ ...loading, signin: true });
+
+
+
       signInWithEmailAndPassword(auth, email, password)
         .then((userInfo) => {
           dispatch({

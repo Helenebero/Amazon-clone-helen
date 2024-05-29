@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { Type } from "../../utility/Action.type";
 
 function Payment() {
-  const [{ user, basket }, dispatch] = useContext(DataContext);
+  const [{ User, basket }, dispatch] = useContext(DataContext);
   console.log(basket);
   const totalItem = basket?.reduce((amount, item) => {
     return item.amount + amount;
@@ -42,7 +42,7 @@ function Payment() {
         method: "POST",
         url: `/payment/create?total=${total * 100}`,
       });
-      // console.log(response.data);
+      console.log(response.data, "response");
       const clientSecret = response.data?.clientSecret;
 
       // client side (react side confirmation)
@@ -52,10 +52,9 @@ function Payment() {
           card: elements.getElement(CardElement),
         },
       });
-      // console.log(paymentIntent);
       await db
         .collection("users")
-        .doc(user.uid)
+        .doc(User.uid)
         .collection("orders")
         .doc(paymentIntent.id)
         .set({
@@ -85,7 +84,7 @@ function Payment() {
       <section className={classes.payment}>
         <div className={classes.flex}>
           <h3>Delivery Address</h3>
-          <div>{user?.email}</div>
+          <div>{User?.email}</div>
           <div>123 React Lane</div>
           <div>Chicago, Il</div>
         </div>
